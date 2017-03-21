@@ -1,21 +1,7 @@
 import abc
 import math
 from scipy import misc as sp
-
-class notANumber(Exception):
-	pass
-
-
-class notAnInteger(Exception):
-	pass
-
-
-class notAPositiveNumber(Exception):
-	pass
-
-
-class dividingByZero(Exception):
-	pass
+import types
 
 
 class abstractCalculator(object):
@@ -55,7 +41,7 @@ class calculator(abstractCalculator):
 		if not self._isNumber(number2):
 			raise notANumber
 		if not number2:
-			raise dividingByZero
+			raise divisionByZero
 		return number1 / number2
 
 	def logarithm(self, number):
@@ -66,6 +52,8 @@ class calculator(abstractCalculator):
 		return math.log(number)
 
 	def derivative(self, func, point, order = 1):
+		if not self._isFunction(func):
+			raise notAFunction
 		if not self._isNumber(point):
 			raise notANumber
 		if not self._isInt(order):
@@ -85,3 +73,26 @@ class calculator(abstractCalculator):
 
 	def _isPositiveNumber(self, number):
 		return number > 0.
+
+	def _isFunction(self, func):
+		return callable(func)
+
+
+class notANumber(Exception):
+	pass
+
+
+class notAnInteger(Exception):
+	pass
+
+
+class notAPositiveNumber(Exception):
+	pass
+
+
+class divisionByZero(Exception):
+	pass
+
+
+class notAFunction(Exception):
+	pass

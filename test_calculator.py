@@ -4,7 +4,8 @@ from calculator import calculator
 from calculator import notANumber
 from calculator import notAnInteger
 from calculator import notAPositiveNumber
-from calculator import dividingByZero
+from calculator import divisionByZero
+from calculator import notAFunction
 
 
 class test_calculator(unittest.TestCase):
@@ -32,7 +33,7 @@ class test_calculator(unittest.TestCase):
 		self.assertRaises(notANumber, self._calc.divide, 2.4, "a")
 
 	def testNumber2PassedToMethodDivideIsZero(self):
-		self.assertRaises(dividingByZero, self._calc.divide, 2.4, 0.)
+		self.assertRaises(divisionByZero, self._calc.divide, 2.4, 0.)
 
 	def testDividingOfIntegersReturnsCorrectResult(self):
 		self.assertEqual(3, self._calc.divide(12,4))
@@ -54,6 +55,9 @@ class test_calculator(unittest.TestCase):
 		self.assertAlmostEqual(1., self._calc.logarithm(math.e), places = 4)
 
 	#tests of method derivative
+	def testFuncPassedToMethodDerivativeIsNotAFunction(self):
+		self.assertRaises(notAFunction, self._calc.derivative, "a", 1.)
+
 	def testPointPassedToMethodDerivativeIsNotANumber(self):
 		self.assertRaises(notANumber, self._calc.derivative, math.exp, "a")
 
