@@ -41,7 +41,7 @@ class calculator(abstractCalculator):
 		if not self._isNumber(number2):
 			raise notANumber
 		if not number2:
-			raise divisionByZero
+			raise dividingByZero
 		return number1 / number2
 
 	def logarithm(self, number):
@@ -60,7 +60,13 @@ class calculator(abstractCalculator):
 			raise notAnInteger
 		if not self._isPositiveNumber(order):
 			raise notAPositiveNumber
-		return sp.derivative(func, point, n = order)
+		if order == 1:
+			return sp.derivative(func, point, dx = 1e-4)
+		else:
+			if self._isOddNumber(order):
+				return sp.derivative(func, point, dx = 1e-2, n = order, order = order+2)
+			else:
+				return sp.derivative(func, point, dx = 1e-2, n = order, order = order+1)
 
 	def _isNumber(self, number):
 		return (self._isInt(number) or self._isFloat(number))
@@ -73,6 +79,9 @@ class calculator(abstractCalculator):
 
 	def _isPositiveNumber(self, number):
 		return number > 0.
+
+	def _isOddNumber(self, number):
+		return number % 2
 
 	def _isFunction(self, func):
 		return callable(func)
@@ -90,7 +99,7 @@ class notAPositiveNumber(Exception):
 	pass
 
 
-class divisionByZero(Exception):
+class dividingByZero(Exception):
 	pass
 
 

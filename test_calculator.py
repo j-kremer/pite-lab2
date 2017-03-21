@@ -1,10 +1,11 @@
 import unittest
+import mock
 import math
 from calculator import calculator
 from calculator import notANumber
 from calculator import notAnInteger
 from calculator import notAPositiveNumber
-from calculator import divisionByZero
+from calculator import dividingByZero
 from calculator import notAFunction
 
 
@@ -20,10 +21,16 @@ class test_calculator(unittest.TestCase):
 		self.assertRaises(notANumber, self._calc.add, 2.4, "a")
 
 	def testAddingOfIntegersReturnsCorrectResult(self):
-		self.assertEqual(8, self._calc.add(3,5))
+		input1 = 3
+		input2 = 5
+		expected_output = 8
+		self.assertEqual(expected_output, self._calc.add(input1, input2))
 
 	def testAddingOfFloatsReturnsCorrectResult(self):
-		self.assertAlmostEqual(3.14, self._calc.add(0.56,2.58), places = 4)
+		input1 = 0.56
+		input2 = 2.58
+		expected_output = 3.14
+		self.assertAlmostEqual(expected_output, self._calc.add(input1, input2), places = 4)
 
 	#tests of method divide
 	def testNumber1PassedToMethodDivideIsNotANumber(self):
@@ -33,13 +40,19 @@ class test_calculator(unittest.TestCase):
 		self.assertRaises(notANumber, self._calc.divide, 2.4, "a")
 
 	def testNumber2PassedToMethodDivideIsZero(self):
-		self.assertRaises(divisionByZero, self._calc.divide, 2.4, 0.)
+		self.assertRaises(dividingByZero, self._calc.divide, 2.4, 0.)
 
 	def testDividingOfIntegersReturnsCorrectResult(self):
-		self.assertEqual(3, self._calc.divide(12,4))
+		input1 = 12
+		input2 = 4
+		expected_output = 3
+		self.assertEqual(expected_output, self._calc.divide(input1, input2))
 
 	def testDividingOfFloatsReturnsCorrectResult(self):
-		self.assertAlmostEqual(4., self._calc.divide(10.,2.5), places = 4)
+		input1 = 10.
+		input2 = 2.5
+		expected_output = 4.
+		self.assertAlmostEqual(expected_output, self._calc.divide(input1, input2), places = 4)
 
 	#tests of method logarithm
 	def testNumberPassedToMethodLogarithmIsNotANumber(self):
@@ -49,10 +62,14 @@ class test_calculator(unittest.TestCase):
 		self.assertRaises(notAPositiveNumber, self._calc.logarithm, -2.4)
 
 	def testLogartihmOfIntegerReturnsCorrectResult(self):
-		self.assertAlmostEqual(2.302585093, self._calc.logarithm(10), places = 4)
+		input = 10
+		expected_output = 2.302585093
+		self.assertAlmostEqual(expected_output, self._calc.logarithm(input), places = 4)
 
 	def testLogartihmOfFloatReturnsCorrectResult(self):
-		self.assertAlmostEqual(1., self._calc.logarithm(math.e), places = 4)
+		input = math.e
+		expected_output = 1.
+		self.assertAlmostEqual(expected_output, self._calc.logarithm(input), places = 4)
 
 	#tests of method derivative
 	def testFuncPassedToMethodDerivativeIsNotAFunction(self):
@@ -66,6 +83,17 @@ class test_calculator(unittest.TestCase):
 
 	def testOrderPassedToMethodDerivativeIsNotPositive(self):
 		self.assertRaises(notAPositiveNumber, self._calc.derivative, math.exp, 0., -2)
+
+	def testDerivativeReturnsCorrectResultWithDefaultOrder(self):
+		inputFunc = math.exp
+		inputPoint = 0.
+		expected_output = 1.
+		self.assertAlmostEqual(1., self._calc.derivative(inputFunc, inputPoint), places = 4)
+
+	@mock.patch('calculator.calculator.derivative')
+	def testDerivativeReturnsCorrectResultWithHigherOrder(self, mock_derivative):
+		mock_derivative.return_value = 1.
+		self.assertAlmostEqual(mock_derivative.return_value, self._calc.derivative(math.sin, 0., 100), places = 4)
 
 
 if __name__ == '__main__':
