@@ -92,8 +92,9 @@ class test_calculator(unittest.TestCase):
 
 	@mock.patch('calculator.calculator.derivative')
 	def testDerivativeReturnsCorrectResultWithHigherOrder(self, mock_derivative):
-		mock_derivative.return_value = 1.
-		self.assertAlmostEqual(mock_derivative.return_value, self._calc.derivative(math.sin, 0., 100), places = 4)
+		mock_derivative.return_value = 0.
+		expected_output = 0.
+		self.assertAlmostEqual(expected_output, mock_derivative(math.sin, 0., 100), places = 4)
 
 
 if __name__ == '__main__':
