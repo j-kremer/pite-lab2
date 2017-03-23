@@ -1,7 +1,7 @@
 # pite-lab2
 Python in the Enterprise (lab 2)
 
-https://travis-ci.org/j-kremer/pite-lab2.svg?branch=master
+[![Build Status](https://travis-ci.org/j-kremer/pite-lab2.svg?branch=master)](https://travis-ci.org/j-kremer/pite-lab2)
 
 calculator.py - simple calculator with following functionalities: addition, division, natural logarithm, derivative
 
